@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+console.log(process.env)
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
@@ -7,13 +8,17 @@ export default defineNuxtConfig({
     "nuxt-security",
     "nuxt-mongoose",
     "@nuxt/devtools",
-    "@sidebase/nuxt-auth"
+    "@sidebase/nuxt-auth",
+    "@nuxtjs/color-mode"
   ],
+  colorMode:{
+    classSuffix:""
+  },
   runtimeConfig:{
   
   },
   mongoose: {
-    uri: 'mongodb://debuger:8312938901@b1s-linux.eastasia.cloudapp.azure.com:27017/?directConnection=true&authSource=debug',
+    uri: process.env.NUXT_MONGOOSE_URI,
     options: {
       bufferCommands: true,
       autoIndex: true,
@@ -31,8 +36,12 @@ export default defineNuxtConfig({
   },
   shadcn: {},
   auth:{
+    baseURL: "/api/user",
     provider:{
       type: 'local',
+      endpoints:{
+        
+      }
     }
   }
 });
