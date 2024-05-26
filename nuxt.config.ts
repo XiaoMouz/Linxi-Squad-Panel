@@ -9,13 +9,13 @@ export default defineNuxtConfig({
     "@nuxt/devtools",
     "@sidebase/nuxt-auth"
   ],
+  runtimeConfig:{
+  
+  },
   mongoose: {
-    uri: "process.env.MONGODB_URI",
+    uri: 'mongodb://debuger:8312938901@b1s-linux.eastasia.cloudapp.azure.com:27017/?directConnection=true&authSource=debug',
     options: {
       bufferCommands: true,
-      dbName: "process.env.MONGODB_DBNAME",
-      user: "process.env.MONGODB_USER",
-      pass: "process.env.MONGODB_PASSWORD",
       autoIndex: true,
       autoCreate: true,
     },
@@ -25,9 +25,14 @@ export default defineNuxtConfig({
   security: {
     headers: {
       // allow DevTools
-      crossOriginEmbedderPolicy:
-        process.env.NODE_ENV === "development" ? "unsafe-none" : "require-corp",
+      crossOriginEmbedderPolicy: process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp',
+
     },
   },
   shadcn: {},
+  auth:{
+    provider:{
+      type: 'local',
+    }
+  }
 });
