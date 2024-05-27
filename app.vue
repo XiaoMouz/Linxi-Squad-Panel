@@ -1,10 +1,8 @@
 <template>
-<NuxtLayout>
-  <NuxtPage />
-</NuxtLayout>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 <style>
-body {
-  background-color: black
-}
+@import "@/assets/css/main.css";
 </style>

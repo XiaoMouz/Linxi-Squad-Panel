@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-console.log(process.env)
+console.log(process.env);
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
@@ -9,14 +9,14 @@ export default defineNuxtConfig({
     "nuxt-mongoose",
     "@nuxt/devtools",
     "@sidebase/nuxt-auth",
-    "@nuxtjs/color-mode"
+    "@nuxtjs/color-mode",
+    "@nuxtjs/google-fonts",
   ],
-  colorMode:{
-    classSuffix:""
+  ssr: false,
+  colorMode: {
+    classSuffix: "",
   },
-  runtimeConfig:{
-  
-  },
+  runtimeConfig: {},
   mongoose: {
     uri: process.env.NUXT_MONGOOSE_URI,
     options: {
@@ -30,18 +30,22 @@ export default defineNuxtConfig({
   security: {
     headers: {
       // allow DevTools
-      crossOriginEmbedderPolicy: process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp',
-
+      crossOriginEmbedderPolicy:
+        process.env.NODE_ENV === "development" ? "unsafe-none" : "require-corp",
     },
   },
   shadcn: {},
-  auth:{
+  auth: {
     baseURL: "/api/user",
-    provider:{
-      type: 'local',
-      endpoints:{
-        
-      }
-    }
-  }
+    provider: {
+      type: "local",
+      endpoints: {},
+    },
+  },
+  googleFonts: {
+    families: {
+      "Noto+Sans+SC": true,
+      Roboto: true,
+    },
+  },
 });

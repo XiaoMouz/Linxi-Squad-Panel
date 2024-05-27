@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxtjs/google-fonts": "^3.2.0",
     "@radix-icons/vue": "^1.0.0",
     "@sidebase/nuxt-auth": "^0.7.2",
     "@vee-validate/zod": "^4.12.8",
