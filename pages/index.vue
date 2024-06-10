@@ -2,6 +2,11 @@
 import { ref } from "vue";
 import * as z from "zod";
 import { toast } from "@/components/ui/toast";
+import CardHeader from "~/components/ui/card/CardHeader.vue";
+
+definePageMeta({
+  layout: "auth",
+});
 
 const schema = z.object({
   username: z
@@ -20,46 +25,70 @@ const schema = z.object({
     }),
 });
 
+const haveError = ref(false);
+
 function onSubmit(values: Record<string, any>) {
-  toast({
-    title: "You submitted the following values:",
-    description: h(
-      "pre",
-      { class: "mt-2 w-[340px] rounded-md bg-slate-950 p-4" },
-      h("code", { class: "text-white" }, JSON.stringify(values, null, 2))
-    ),
-  });
+  fetch("/api/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(values),
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        haveError.value = true;
+        throw new Error("登录失败");
+      }
+    })
+    .then((data) => {
+      console.log(data);
+      console.log("登录成功");
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
 </script>
 <template>
-  <div class="w-2/3 space-y-6">
-    <Alert variant="destructive">
-      <AlertTitle>Error</AlertTitle>
-      <AlertDescription>
-        Your session has expired. Please log in again.
-      </AlertDescription>
-    </Alert>
-    <AutoForm
-      :schema="schema"
-      :field-config="{
-        username: {
-          label: '用户名',
-          inputProps: {
-            type: 'text',
-            placeholder: '用户名',
-          },
-        },
-        password: {
-          label: '密码',
-          inputProps: {
-            type: 'password',
-            placeholder: '密码',
-          },
-        },
-      }"
-      @submit="onSubmit"
-    >
-      <Button type="submit">登录</Button>
-    </AutoForm>
+  <div class="my-auto min-w-[340px] space-y-6">
+    <Card>
+      <CardHeader>
+        <CardTitle>登录</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Alert variant="destructive" v-if="haveError">
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            Your session has expired. Please log in again.
+          </AlertDescription>
+        </Alert>
+
+        <AutoForm
+          :schema="schema"
+          :field-config="{
+            username: {
+              label: '用户名',
+              inputProps: {
+                type: 'text',
+                placeholder: '用户名',
+              },
+            },
+            password: {
+              label: '密码',
+              inputProps: {
+                type: 'password',
+                placeholder: '密码',
+              },
+            },
+          }"
+          @submit="onSubmit"
+        >
+          <Button class="mt-6" type="submit">登录</Button>
+        </AutoForm>
+      </CardContent>
+    </Card>
   </div>
 </template>

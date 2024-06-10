@@ -1,5 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-console.log(process.env);
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
@@ -16,7 +15,8 @@ export default defineNuxtConfig({
   colorMode: {
     classSuffix: "",
   },
-  runtimeConfig: {},
+  runtimeConfig: {
+  },
   mongoose: {
     uri: process.env.NUXT_MONGOOSE_URI,
     options: {

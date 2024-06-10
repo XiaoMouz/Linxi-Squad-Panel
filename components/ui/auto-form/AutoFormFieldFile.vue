@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { TrashIcon } from '@radix-icons/vue'
+import { TrashIcon } from 'lucide-vue-next'
+import AutoFormLabel from './AutoFormLabel.vue'
 import { beautifyObjectName } from './utils'
 import type { FieldProps } from './interface'
-import AutoFormLabel from './AutoFormLabel.vue'
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -47,7 +47,7 @@ async function parseFileAsString(file: File | undefined): Promise<string> {
               slotProps.componentField.onInput(parsed)
             }"
           />
-          <div v-else class="flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent pl-3 pr-1 py-1 text-sm shadow-sm transition-colors">
+          <div v-else class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-transparent pl-3 pr-1 py-1 text-sm shadow-sm transition-colors">
             <p>{{ inputFile?.name }}</p>
             <Button
               :size="'icon'"
@@ -60,7 +60,7 @@ async function parseFileAsString(file: File | undefined): Promise<string> {
                 slotProps.componentField.onInput(undefined)
               }"
             >
-              <TrashIcon />
+              <TrashIcon :size="16" />
             </Button>
           </div>
         </slot>
