@@ -12,8 +12,7 @@ export default defineEventHandler((event) => {
     setResponseStatus(event, 400);
     throw createError({
       statusCode: 400,
-      statusMessage: body.error.message,
+      statusMessage: "Bad Request",
     });
   }
-  
 });

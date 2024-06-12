@@ -28,29 +28,22 @@ const schema = z.object({
 const haveError = ref(false);
 const errorMessage = ref("");
 
-function onSubmit(values: Record<string, any>) {
-  fetch("/api/login", {
+async function onSubmit(values: Record<string, any>) {
+  const res = await fetch("/api/user/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(values),
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        haveError.value = true;
-        throw new Error("登录失败");
-      }
-    })
-    .then((data) => {
-      console.log(data);
-      console.log("登录成功");
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  });
+
+  if (res.ok) {
+    console.log("登录成功");
+    window.location.href = "/";
+  } else {
+    haveError.value = true;
+    errorMessage.value = await res.statusText;
+  }
 }
 </script>
 <template>
@@ -60,10 +53,10 @@ function onSubmit(values: Record<string, any>) {
         <CardTitle>登录</CardTitle>
       </CardHeader>
       <CardContent>
-        <Alert variant="destructive" v-if="haveError">
-          <AlertTitle>Error</AlertTitle>
+        <Alert variant="destructive" v-if="haveError" class="mb-4">
+          <AlertTitle>错误</AlertTitle>
           <AlertDescription>
-            {{ haveError ? "登录失败" : errorMessage }}
+            {{ "登录失败&nbsp;" + errorMessage }}
           </AlertDescription>
         </Alert>
 
