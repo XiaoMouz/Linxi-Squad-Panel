@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     classSuffix: "",
   },
   runtimeConfig: {
+    password: "password1",
   },
   mongoose: {
     uri: process.env.NUXT_MONGOOSE_URI,
