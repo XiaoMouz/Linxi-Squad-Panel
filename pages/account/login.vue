@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import * as z from "zod";
-import { toast } from "@/components/ui/toast";
 import CardHeader from "~/components/ui/card/CardHeader.vue";
 
 definePageMeta({
   layout: "auth",
+  auth: {
+    unauthenticatedOnly: true,
+    navigateAuthenticatedTo: "/",
+  },
 });
+const { signIn } = useAuth();
 
 const schema = z.object({
   username: z
@@ -27,22 +31,39 @@ const schema = z.object({
 
 const haveError = ref(false);
 const errorMessage = ref("");
+const signInHandler = async ({
+  username,
+  password,
+}: {
+  username: string;
+  password: string;
+}) => {
+  const { error, url } = await signIn({
+    username,
+    password,
+  });
+  if (error) {
+    haveError.value = true;
+    errorMessage.value = error.message || "An error occurred";
+  } else {
+    // No error, continue with the sign in, e.g., by following the returned redirect:
+    return navigateTo(url, { external: true });
+  }
+};
 
 async function onSubmit(values: Record<string, any>) {
-  const res = await fetch("/api/user/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(values),
-  });
-
-  if (res.ok) {
-    console.log("登录成功");
-    window.location.href = "/";
-  } else {
+  try {
+    const res = await signInHandler({
+      username: values.username,
+      password: values.password,
+    });
+    if (!res) {
+      haveError.value = true;
+      errorMessage.value = "用户名或密码错误";
+    }
+  } catch {
     haveError.value = true;
-    errorMessage.value = await res.statusText;
+    errorMessage.value = "内部错误";
   }
 }
 </script>

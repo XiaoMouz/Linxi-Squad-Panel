@@ -17,6 +17,8 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     password: "password1",
+    logLevel: 5,
+    secret: "djawiodj12-=0",
   },
   mongoose: {
     uri: process.env.NUXT_MONGOOSE_URI,
@@ -41,6 +43,12 @@ export default defineNuxtConfig({
     provider: {
       type: "local",
       endpoints: {},
+      pages: {
+        login: "/account/login",
+      },
+    },
+    globalAppMiddleware: {
+      isEnabled: true,
     },
   },
   googleFonts: {
