@@ -5,9 +5,9 @@ export default defineEventHandler(async (event) => {
   // https://nuxt.com/docs/api/configuration-nuxt-config#runtimeconfig
   const body = z
     .object({
-      email: z.string().email(),
+      email: z.string().email().optional(),
       password: z.string(),
-      username: z.string().optional(),
+      username: z.string().min(2, { message: "用户名至少2个字符" }),
       role: z.string().optional(),
       token: z.string(),
     })
@@ -38,5 +38,6 @@ export default defineEventHandler(async (event) => {
       });
     }
   }
+  setResponseStatus(event, 201);
   return { message: "user created" };
 });

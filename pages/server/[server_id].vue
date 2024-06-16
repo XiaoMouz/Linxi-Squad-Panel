@@ -1,4 +1,4 @@
 <template>
-  <footer></footer>
+  <menu></menu>
 </template>
 <script setup lang="ts"></script>

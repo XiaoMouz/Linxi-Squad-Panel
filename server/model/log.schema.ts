@@ -3,35 +3,31 @@ import { Schema, Date } from "mongoose";
 
 // import { hash } from 'bcrypt'
 
-export const UserSchema = defineMongooseModel({
-  name: "User",
+export const LogSchema = defineMongooseModel({
+  name: "Log",
   schema: {
-    email: {
-      type: "string",
-      unique: true,
-      required: true,
-    },
-    password: {
+    location: {
       type: "string",
     },
-    username: {
+    from: {
       type: "string",
-      unique: true,
-      required: true,
     },
-    role: {
-      type: Schema.Types.ObjectId,
+    message: {
+      type: "string",
+    },
+    stack: {
+      type: "string",
+    },
+    type: {
+      type: "string",
     },
     createdAt: {
-      type: Date,
-    },
-    updatedAt: {
       type: Date,
     },
   },
   hooks(schema) {
     schema.pre("save", function (this, next) {
-      if (this.password && this.email && this.username) next();
+      if (this.location && this.message) next();
 
       throw createError({
         statusCode: 500,

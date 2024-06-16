@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import * as z from "zod";
 import CardHeader from "~/components/ui/card/CardHeader.vue";
+import uploadErrorLog from "~/utils/log";
 
 definePageMeta({
   layout: "auth",
@@ -10,7 +11,10 @@ definePageMeta({
     navigateAuthenticatedTo: "/",
   },
 });
-const { signIn } = useAuth();
+
+const pending = ref(false);
+const haveError = ref(false);
+const errorMessage = ref("");
 
 const schema = z.object({
   username: z
@@ -29,46 +33,42 @@ const schema = z.object({
     }),
 });
 
-const haveError = ref(false);
-const errorMessage = ref("");
-const signInHandler = async ({
-  username,
-  password,
-}: {
-  username: string;
-  password: string;
-}) => {
-  const { error, url } = await signIn({
-    username,
-    password,
-  });
-  if (error) {
-    haveError.value = true;
-    errorMessage.value = error.message || "An error occurred";
-  } else {
-    // No error, continue with the sign in, e.g., by following the returned redirect:
-    return navigateTo(url, { external: true });
-  }
-};
+function lockOnPending(enable: boolean) {
+  pending.value = enable;
+}
 
 async function onSubmit(values: Record<string, any>) {
+  lockOnPending(true);
+  haveError.value = false;
+  const { signIn } = useAuth();
   try {
-    const res = await signInHandler({
-      username: values.username,
-      password: values.password,
+    const { username, password } = schema.parse(values);
+    const res = await signIn(
+      {
+        username,
+        password,
+      },
+      { external: true }
+    ).catch((e) => {
+      if (e.message.includes("401")) {
+        errorMessage.value = "用户名或密码错误";
+        haveError.value = true;
+      } else {
+        uploadErrorLog(useRoute().path, e);
+        errorMessage.value = "内部错误";
+        haveError.value = true;
+      }
     });
-    if (!res) {
-      haveError.value = true;
-      errorMessage.value = "用户名或密码错误";
-    }
-  } catch {
-    haveError.value = true;
+  } catch (e: any) {
+    uploadErrorLog(useRoute().path, e);
     errorMessage.value = "内部错误";
+    haveError.value = true;
   }
+  lockOnPending(false);
 }
 </script>
 <template>
-  <div class="my-auto min-w-[340px] space-y-6">
+  <div class="my-auto min-w-[340px] space-y-6" :class="pending ? 'blur' : ''">
     <Card>
       <CardHeader>
         <CardTitle>登录</CardTitle>
@@ -101,9 +101,10 @@ async function onSubmit(values: Record<string, any>) {
           }"
           @submit="onSubmit"
         >
-          <Button class="mt-6" type="submit">登录</Button>
+          <Button class="mt-6" type="submit" :disabled="pending">登录</Button>
         </AutoForm>
       </CardContent>
     </Card>
   </div>
+  <LoadingCycle v-if="pending" sizeClass="w-6 h-6" layoutClass="fixed" />
 </template>

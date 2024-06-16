@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { UserSessionData } from "./types/user.type";
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
@@ -35,17 +37,23 @@ export default defineNuxtConfig({
       // allow DevTools
       crossOriginEmbedderPolicy:
         process.env.NODE_ENV === "development" ? "unsafe-none" : "require-corp",
+      // allow image from anywhere
+      contentSecurityPolicy: {
+        "default-src": ["'self'"],
+        "img-src": ["'self'", "data:", "*"],
+      },
     },
   },
   shadcn: {},
   auth: {
-    baseURL: "/api/user",
+    baseURL: "http://localhost:3000/api/user",
     provider: {
       type: "local",
       endpoints: {},
       pages: {
         login: "/account/login",
       },
+      sessionDataType: UserSessionData,
     },
     globalAppMiddleware: {
       isEnabled: true,
