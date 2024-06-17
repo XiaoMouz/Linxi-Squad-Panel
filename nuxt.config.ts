@@ -7,7 +7,6 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "shadcn-nuxt",
     "nuxt-security",
-    "nuxt-mongoose",
     "@nuxt/devtools",
     "@sidebase/nuxt-auth",
     "@nuxtjs/color-mode",
@@ -21,16 +20,7 @@ export default defineNuxtConfig({
     password: "password1",
     logLevel: 5,
     secret: "djawiodj12-=0",
-  },
-  mongoose: {
-    uri: process.env.NUXT_MONGOOSE_URI,
-    options: {
-      bufferCommands: true,
-      autoIndex: true,
-      autoCreate: true,
-    },
-    modelsDir: "models",
-    devtools: true,
+    db: process.env.NUXT_MONGODB_URI,
   },
   security: {
     headers: {

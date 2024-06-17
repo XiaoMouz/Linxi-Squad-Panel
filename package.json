@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@nuxtjs/google-fonts": "^3.2.0",
+    "@prisma/client": "^5.15.0",
     "@radix-icons/vue": "^1.0.0",
     "@sidebase/nuxt-auth": "^0.7.2",
     "@types/bcryptjs": "^2.4.6",
@@ -38,8 +39,10 @@
   "devDependencies": {
     "@nuxtjs/color-mode": "^3.4.1",
     "@nuxtjs/tailwindcss": "^6.12.0",
-    "nuxt-mongoose": "^1.0.6",
+    "@types/node": "^20.14.2",
+    "prisma": "^5.15.0",
     "shadcn-vue": "^0.10.5",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   }
 }

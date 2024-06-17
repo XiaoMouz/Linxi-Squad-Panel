@@ -1,5 +1,6 @@
 import z from "zod";
-import mongoose from "mongoose";
+import { createLog } from "~/server/model/log";
+
 import useLog from "~/server/utils/log";
 export default defineEventHandler(async (event) => {
   const body = z
@@ -18,16 +19,9 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Bad Request",
     });
   }
-  const { message, type, stack } = body.data;
+  const { message, type, stack, location } = body.data;
   useLog().log("report from client:" + message, type, stack);
-  await mongoose.connection.db.collection("logs").insertOne({
-    from: "client",
-    location,
-    message,
-    type,
-    stack: JSON.stringify(stack),
-    createdAt: new Date(),
-  });
+  createLog("client", location, message, type, stack, new Date());
 
   return { message: "log created" };
 });

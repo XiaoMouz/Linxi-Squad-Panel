@@ -1,5 +1,5 @@
 import { createConsola } from "consola";
-import mongoose from "mongoose";
+import { createLog } from "../model/log";
 
 const log = createConsola({
   level: useRuntimeConfig().logLevel || 3,
@@ -15,14 +15,7 @@ export async function log2backend(
   type: string = "info",
   stack: any = "No Stack"
 ) {
-  await mongoose.connection.db.collection("logs").insertOne({
-    from: "server",
-    location,
-    message,
-    type,
-    stack: JSON.stringify(stack),
-    createdAt: new Date(),
-  });
+  await createLog("server", location, message, type, stack, new Date());
 
   log.info("report from server:" + message, stack === "No Stack" ? "" : stack);
 }

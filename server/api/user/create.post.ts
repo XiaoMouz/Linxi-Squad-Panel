@@ -1,5 +1,5 @@
 import { z } from "zod";
-import mongoose from "mongoose";
+import { create } from "~/server/model/user";
 
 export default defineEventHandler(async (event) => {
   // https://nuxt.com/docs/api/configuration-nuxt-config#runtimeconfig
@@ -23,13 +23,13 @@ export default defineEventHandler(async (event) => {
   if (body.data.token === pwd) {
     const hashed = hash(body.data.password);
     try {
-      await mongoose.connection.db.collection("users").insertOne({
-        email: body.data.email,
-        password: hashed,
-        username: body.data.username,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
+      create(
+        body.data.email,
+        hashed,
+        body.data.username,
+        new Date(),
+        new Date()
+      );
     } catch (error) {
       console.log(error);
       throw createError({

@@ -1,6 +1,6 @@
 import z from "zod";
-import sign from "jsonwebtoken";
-import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+import { findByUsername, updateUser } from "~/server/model/user";
 import { compare } from "~/server/utils/secret";
 import useLog, { log2backend } from "~/server/utils/log";
 
@@ -24,9 +24,7 @@ export default defineEventHandler(async (event) => {
   }
   const { username, password } = body.data;
 
-  const res = await mongoose.connection.db
-    .collection("users")
-    .findOne({ username });
+  const res = await findByUsername(username);
 
   const ip = getRequestIP(event);
   if (!res) {
@@ -58,19 +56,15 @@ export default defineEventHandler(async (event) => {
   const refreshToken =
     Math.floor(Math.random() * (1000000000000000 - 1 + 1)) + 1;
   const user = {
-    _id: res._id,
+    _id: res.id,
     username: res.username,
     picture: res.picture,
     email: res.email,
   };
 
-  const accessToken = sign.sign(
-    { ...user, scope: ["global", "user"] },
-    SECRET,
-    {
-      expiresIn,
-    }
-  );
+  const accessToken = jwt.sign({ ...user }, SECRET, {
+    expiresIn,
+  });
   //set username to cookie
   setCookie(event, "username", username, {
     maxAge: 60 * 60 * 24 * 7,
@@ -82,14 +76,10 @@ export default defineEventHandler(async (event) => {
   // };
 
   // update user last login
-  await mongoose.connection.db.collection("users").updateOne(
-    { username },
-    {
-      $set: {
-        updatedAt: new Date(),
-      },
-    }
-  );
+  updateUser(res.id);
+
+  //set header authorization
+  setHeader(event, "authorization", `Bearer ${accessToken}`);
 
   return {
     token: accessToken,

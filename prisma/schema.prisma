@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("NUXT_MONGODB_URI")
+}
+
+model banlist {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model binds {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model clans {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model configs {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model debug {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model logs {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @db.Date
+  from      String
+  location  String
+  message   String
+  stack     String
+  type      String
+}
+
+model players {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model roles {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  color      String
+  creater    String
+  hideen     Boolean
+  level      Int
+  maintainer Boolean
+  name       String
+  super_role Boolean
+}
+
+model servers {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model teams {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model users {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  username  String   @unique
+  password  String
+  createdAt DateTime @db.Date
+  updatedAt DateTime @db.Date
+  picture   String
+}
