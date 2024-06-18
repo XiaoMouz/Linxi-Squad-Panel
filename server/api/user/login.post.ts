@@ -1,6 +1,6 @@
 import z from "zod";
 import jwt from "jsonwebtoken";
-import { findByUsername, updateUser } from "~/server/model/user";
+import { findByUsername, updateUserTime } from "~/server/model/user";
 import { compare } from "~/server/utils/secret";
 import useLog, { log2backend } from "~/server/utils/log";
 
@@ -76,7 +76,7 @@ export default defineEventHandler(async (event) => {
   // };
 
   // update user last login
-  updateUser(res.id);
+  updateUserTime(res.id);
 
   //set header authorization
   setHeader(event, "authorization", `Bearer ${accessToken}`);

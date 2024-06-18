@@ -31,7 +31,7 @@ export async function findByUsername(username: string) {
   return user;
 }
 
-export async function updateUser(id: string) {
+export async function updateUserTime(id: string) {
   let user = await prisma.users.update({
     where: { id },
     data: { updatedAt: new Date() },
