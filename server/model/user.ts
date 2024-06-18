@@ -18,7 +18,7 @@ export async function create(
       picture,
     },
   });
-  console.log(user);
+
   return user;
 }
 

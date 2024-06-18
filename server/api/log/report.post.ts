@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
   }
   const { message, type, stack, location } = body.data;
   useLog().log("report from client:" + message, type, stack);
-  createLog("client", location, message, type, stack, new Date());
+  await createLog("client", location, message, type, stack, new Date());
 
   return { message: "log created" };
 });

@@ -2,7 +2,7 @@ import { UserSearch } from "lucide-vue-next";
 import { string } from "zod";
 
 export interface User {
-  _id: string;
+  id: string;
   email: string;
   password: string;
   username: string;
@@ -12,7 +12,7 @@ export interface User {
 }
 
 export const UserSessionData = {
-  _id: "string",
+  id: "string",
   email: "string",
   username: "string",
   picture: "string",

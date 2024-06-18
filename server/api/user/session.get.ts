@@ -3,24 +3,20 @@ import jwt from "jsonwebtoken";
 import { SECRET } from "./login.post";
 import { log2backend } from "~/server/utils/log";
 
-const TOKEN_TYPE = "Bearer";
+// this endpoint didn't work
+// todo: fix header and cookie
 
-const extractToken = (authHeaderValue: string) => {
-  const [, token] = authHeaderValue.split(`${TOKEN_TYPE} `);
-  return token;
-};
+const ensureAuth = async (event: H3Event) => {
+  const authCookieValue = await getCookie(event, "auth.token");
 
-const ensureAuth = (event: H3Event) => {
-  const authHeaderValue = getRequestHeader(event, "authorization");
-  if (typeof authHeaderValue === "undefined") {
+  if (typeof authCookieValue === "undefined") {
     throw createError({
       statusCode: 403,
-      statusMessage:
-        "Need to pass valid Bearer-authorization header to access this endpoint",
+      statusMessage: "Need auth.token cookie to access this endpoint",
     });
   }
+  const extractedToken = authCookieValue;
 
-  const extractedToken = extractToken(authHeaderValue);
   try {
     return jwt.verify(extractedToken, SECRET);
   } catch (error) {
@@ -32,7 +28,7 @@ const ensureAuth = (event: H3Event) => {
   }
 };
 
-export default eventHandler((event) => {
-  const user = ensureAuth(event);
+export default eventHandler(async (event) => {
+  const user = await ensureAuth(event);
   return user;
 });
