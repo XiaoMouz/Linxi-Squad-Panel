@@ -10,24 +10,24 @@ const $route = useRoute();
 
 const sidebarNavItems: Item[] = [
   {
-    title: "Profile",
-    href: "/examples/forms",
+    title: "账户信息",
+    href: "/settings/++++",
   },
   {
-    title: "Account",
-    href: "/examples/forms/account",
+    title: "服务器",
+    href: "/settings/server",
   },
   {
-    title: "Appearance",
-    href: "/examples/forms/appearance",
+    title: "子用户设定",
+    href: "/settings/user",
   },
   {
-    title: "Notifications",
-    href: "/examples/forms/notifications",
+    title: "订阅",
+    href: "/settings/subscription",
   },
   {
-    title: "Display",
-    href: "/examples/forms/display",
+    title: "关于",
+    href: "/settings/about",
   },
 ];
 </script>

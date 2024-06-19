@@ -2,23 +2,11 @@
 
 <template>
   <NuxtLayout name="default">
-    <div class="md:hidden">
-      <VPImage
-        alt="Forms"
-        width="1280"
-        height="1214"
-        class="block"
-        :image="{
-          dark: '/examples/forms-dark.png',
-          light: '/examples/forms-light.png',
-        }"
-      />
-    </div>
-    <div class="hidden space-y-6 p-10 pb-16 md:block">
+    <div class="hidden space-y-6 p-10 pb-16 md:block w-full">
       <div class="space-y-0.5">
-        <h2 class="text-2xl font-bold tracking-tight">Settings</h2>
+        <h2 class="text-2xl font-bold tracking-tight">管理/设定</h2>
         <p class="text-muted-foreground">
-          Manage your account settings and set e-mail preferences.
+          编辑您的个人资料，设定订阅下的服务器、子用户、权限等
         </p>
       </div>
       <Separator class="my-6" />

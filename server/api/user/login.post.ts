@@ -53,10 +53,10 @@ export default defineEventHandler(async (event) => {
     `${ip ? ip : getRequestHost(event)} login to username [${username}] `
   );
   const expiresIn = "7d";
-  const refreshToken =
-    Math.floor(Math.random() * (1000000000000000 - 1 + 1)) + 1;
+  //const refreshToken =
+  //  Math.floor(Math.random() * (1000000000000000 - 1 + 1)) + 1;
   const user = {
-    _id: res.id,
+    id: res.id,
     username: res.username,
     picture: res.picture,
     email: res.email,
@@ -68,7 +68,6 @@ export default defineEventHandler(async (event) => {
   //set username to cookie
   setCookie(event, "username", username, {
     maxAge: 60 * 60 * 24 * 7,
-    httpOnly: true,
   });
   // refreshTokens[refreshToken] = {
   //   accessToken,

@@ -43,6 +43,9 @@ export default defineNuxtConfig({
       pages: {
         login: "/account/login",
       },
+      token: {
+        maxAgeInSeconds: 60 * 60 * 24 * 7,
+      },
       sessionDataType: UserSessionData,
     },
     globalAppMiddleware: {

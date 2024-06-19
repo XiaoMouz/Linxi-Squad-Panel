@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { ensureAuth } from "~/server/utils/secret";
+
 export default defineEventHandler(async (event) => {
   const body = await z
     .object({
@@ -14,6 +16,5 @@ export default defineEventHandler(async (event) => {
       message: body.error.message,
     });
   }
-  
-  
+  const user = await ensureAuth(event);
 });

@@ -46,6 +46,8 @@ const components: { title: string; href: string; description: string }[] = [
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
 ];
+
+
 </script>
 
 <template>
@@ -105,8 +107,8 @@ const components: { title: string; href: string; description: string }[] = [
         </NavigationMenuContent>
       </NavigationMenuItem>
       <NavigationMenuItem>
-        <NavigationMenuLink href="/docs" :class="navigationMenuTriggerStyle()">
-          Documentation
+        <NavigationMenuLink href="/rooter" :class="navigationMenuTriggerStyle()">
+          根管理
         </NavigationMenuLink>
       </NavigationMenuItem>
     </NavigationMenuList>
