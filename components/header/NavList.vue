@@ -9,6 +9,10 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
+import { cn } from "@/lib/utils";
+
+const $route = useRoute();
+
 const components: { title: string; href: string; description: string }[] = [
   {
     title: "Alert Dialog",
@@ -46,51 +50,83 @@ const components: { title: string; href: string; description: string }[] = [
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
 ];
-
-
 </script>
 
 <template>
   <NavigationMenu>
     <NavigationMenuList>
       <NavigationMenuItem>
-        <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
+        <NavigationMenuLink
+          @click="() => $router.push('/')"
+          :class="
+            cn(
+              'cursor-pointer',
+              navigationMenuTriggerStyle(),
+              $route.path === `/` && 'bg-muted hover:bg-muted'
+            )
+          "
+        >
+          你好，世界
+        </NavigationMenuLink>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <NavigationMenuTrigger
+          :class="
+            cn(
+              navigationMenuTriggerStyle(),
+              $route.path.includes('/server') && 'bg-muted hover:bg-muted',
+              $route.path.includes('/ticket') && 'bg-muted hover:bg-muted',
+              $route.path.includes('/admin') && 'bg-muted hover:bg-muted'
+            )
+          "
+          >导航</NavigationMenuTrigger
+        >
         <NavigationMenuContent>
           <ul
             class="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[minmax(0,.75fr)_minmax(0,1fr)]"
           >
             <li class="row-span-3">
-              <NavigationMenuLink as-child>
-                <a
-                  class="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                  href="/"
-                >
-                  <img
-                    src="https://www.radix-vue.com/logo.svg"
-                    class="h-6 w-6"
-                  />
-                  <div class="mb-2 mt-4 text-lg font-medium">shadcn/ui</div>
-                  <p class="text-sm leading-tight text-muted-foreground">
-                    Beautifully designed components built with Radix UI and
-                    Tailwind CSS.
-                  </p>
-                </a>
+              <NavigationMenuLink as-child class="">
+                <div class="rounded-md bg-custom w-full h-full">
+                  <a
+                    class="rounded-md bg-custom-child cursor-pointer flex h-full w-full select-none flex-col justify-end from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                    @click="() => $router.push('/admin')"
+                  >
+                    <img src="/public/favicon.ico" class="h-6 w-6" />
+                    <div class="mb-2 mt-4 text-lg font-medium">管理中心</div>
+                    <p
+                      class="text-white/90 text-sm leading-tight dark:text-muted-foreground"
+                    >
+                      Welcome back Commander.
+                    </p>
+                  </a>
+                </div>
               </NavigationMenuLink>
             </li>
-            <NavListItem href="/docs" title="Introduction">
-              Re-usable components built using Radix UI and Tailwind CSS.
+            <NavListItem href="/server/var" title="人数最多的服务器 (42人)">
+              [CN] 萌新乐园 压家保护
             </NavListItem>
-            <NavListItem href="/docs/installation" title="Installation">
-              How to install dependencies and structure your app.
+            <NavListItem
+              href="/server/"
+              title="查看所有服务器"
+              :class="
+                cn(
+                  $route.path.includes('/server') &&
+                    $route.path !== '/server/var' &&
+                    'bg-muted hover:bg-muted'
+                )
+              "
+            >
+              当前有 0 个服务器，没有要初始化的服务器
             </NavListItem>
-            <NavListItem href="/docs/primitives/typography" title="Typography">
-              Styles for headings, paragraphs, lists...etc
+            <NavListItem href="/ticket/" title="工单管理">
+              当前有 0 个工单，没有要处理的工单
             </NavListItem>
           </ul>
         </NavigationMenuContent>
       </NavigationMenuItem>
       <NavigationMenuItem>
-        <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+        <NavigationMenuTrigger>组件中心</NavigationMenuTrigger>
         <NavigationMenuContent>
           <ul
             class="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]"
@@ -107,10 +143,85 @@ const components: { title: string; href: string; description: string }[] = [
         </NavigationMenuContent>
       </NavigationMenuItem>
       <NavigationMenuItem>
-        <NavigationMenuLink href="/rooter" :class="navigationMenuTriggerStyle()">
+        <NavigationMenuLink
+          @click="() => $router.push('/rooter')"
+          :class="
+            cn(
+              'cursor-pointer',
+              navigationMenuTriggerStyle(),
+              $route.path.includes(`/rooter`) && 'bg-muted hover:bg-muted'
+            )
+          "
+        >
           根管理
         </NavigationMenuLink>
       </NavigationMenuItem>
     </NavigationMenuList>
   </NavigationMenu>
 </template>
+
+<style scoped>
+/* add a filter shadow for background */
+.bg-custom {
+  background: url(/assets/image/nav/NAVBG.png) center center/cover;
+}
+.bg-custom-child {
+  backdrop-filter: blur(2px);
+}
+@media (prefers-color-scheme: dark) {
+  .bg-custom-child {
+    position: relative;
+    background: rgba(0, 0, 0, 0.3); /* 先设置一个基础颜色 */
+  }
+
+  .bg-custom-child::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+    transition: opacity 0.3s;
+    opacity: 0.2;
+  }
+
+  .bg-custom-child:hover::before {
+    opacity: 0.6; /* 调整透明度以改变显示效果 */
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .bg-custom {
+    background: url(/assets/image/nav/NAVBGL.png) center center/cover;
+  }
+
+  .bg-custom-child {
+    position: relative;
+    background: rgba(0, 0, 0, 0.1); /* 先设置一个基础颜色 */
+  }
+  .bg-custom-child::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      32deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+    transition: opacity 0.3s;
+    opacity: 0.2;
+  }
+
+  .bg-custom-child:hover::before {
+    opacity: 0.5; /* 调整透明度以改变显示效果 */
+  }
+}
+</style>
