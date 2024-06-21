@@ -1,6 +1,3 @@
-import { UserSearch } from "lucide-vue-next";
-import { string } from "zod";
-
 export interface User {
   id: string;
   email: string;
@@ -9,6 +6,7 @@ export interface User {
   picture: string;
   createdAt: Date;
   updatedAt: Date;
+  role: string[];
 }
 
 export const UserSessionData = {
@@ -16,4 +14,5 @@ export const UserSessionData = {
   email: "string",
   username: "string",
   picture: "string",
+  role: "string[]",
 };

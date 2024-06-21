@@ -1,3 +1,3 @@
 export default eventHandler(async (event) => {
-  return { status: "OK" };
+  return { token: await getCookie(event, "auth.token") };
 });
