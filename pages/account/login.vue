@@ -10,6 +10,7 @@ definePageMeta({
     unauthenticatedOnly: true,
     navigateAuthenticatedTo: "/",
   },
+  title: "登录到",
 });
 
 const pending = ref(false);

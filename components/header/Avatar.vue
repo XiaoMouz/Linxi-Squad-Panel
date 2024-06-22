@@ -1,14 +1,14 @@
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger
-      ><Avatar>
+      ><UIAvatar>
         <AvatarImage
           v-if="user?.picture"
           :src="user.picture"
           :alt="user.username + '\'s avatar'"
         />
         <AvatarFallback v-else>{{ user?.username.charAt(0) }}</AvatarFallback>
-      </Avatar></DropdownMenuTrigger
+      </UIAvatar></DropdownMenuTrigger
     >
     <DropdownMenuContent>
       <DropdownMenuLabel>你好呀 {{ user?.username }}</DropdownMenuLabel>
@@ -31,10 +31,14 @@
   </DropdownMenu>
 </template>
 <script setup lang="ts">
+import type { User } from "@/types/user.type";
 import AvatarFallback from "../ui/avatar/AvatarFallback.vue";
+import { Avatar as UIAvatar } from "../ui/avatar";
 
-const { getSession } = useAuth();
-const user = await getSession();
+defineProps<{
+  user: User;
+}>();
+
 const router = useRouter();
 function logout() {
   router.push("/account/logout");

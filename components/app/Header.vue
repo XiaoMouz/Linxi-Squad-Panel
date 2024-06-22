@@ -6,11 +6,15 @@
       <img src="~/public/favicon.ico" alt="Logo" class="h-10 w-10" />
     </div>
     <div>
-      <HeaderNavList />
+      <HeaderNavList :user="user" />
     </div>
     <div>
-      <HeaderAvatar />
+      <HeaderAvatar :user="user" />
     </div>
   </header>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { User } from "~/types/user.type";
+
+defineProps<{ user: User }>();
+</script>

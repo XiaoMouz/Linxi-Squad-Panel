@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { set } from "zod";
+definePageMeta({
+  layout: "auth",
+  title: "登出",
+});
 
 const { signOut } = useAuth();
 const router = useRouter();

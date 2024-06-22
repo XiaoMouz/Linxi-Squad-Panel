@@ -1,3 +1,5 @@
+import type { Role } from "./role.type";
+
 export interface User {
   id: string;
   email: string;
@@ -6,7 +8,7 @@ export interface User {
   picture: string;
   createdAt: Date;
   updatedAt: Date;
-  role: string[];
+  role: Role[];
 }
 
 export const UserSessionData = {

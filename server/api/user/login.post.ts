@@ -60,6 +60,7 @@ export default defineEventHandler(async (event) => {
     username: res.username,
     picture: res.picture,
     email: res.email,
+    role: res.role,
   };
 
   const accessToken = jwt.sign({ ...user }, SECRET, {

@@ -10,6 +10,13 @@ import {
 } from "@/components/ui/navigation-menu";
 
 import { cn } from "@/lib/utils";
+import type { User } from "@/types/user.type";
+
+const props = defineProps<{ user: User }>();
+
+const isRooter =
+  !(props.user.role === undefined) &&
+  props.user.role.some((role) => role.super_role || role.maintainer);
 
 const $route = useRoute();
 
@@ -74,7 +81,7 @@ const components: { title: string; href: string; description: string }[] = [
           :class="
             cn(
               navigationMenuTriggerStyle(),
-              $route.path.includes('/server') && 'bg-muted hover:bg-muted',
+              $route.path.startsWith('/server') && 'bg-muted hover:bg-muted',
               $route.path.includes('/ticket') && 'bg-muted hover:bg-muted',
               $route.path.includes('/admin') && 'bg-muted hover:bg-muted'
             )
@@ -142,7 +149,7 @@ const components: { title: string; href: string; description: string }[] = [
           </ul>
         </NavigationMenuContent>
       </NavigationMenuItem>
-      <NavigationMenuItem>
+      <NavigationMenuItem v-if="isRooter">
         <NavigationMenuLink
           @click="() => $router.push('/rooter')"
           :class="
