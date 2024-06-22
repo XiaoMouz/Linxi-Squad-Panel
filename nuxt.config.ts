@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { UserSessionData } from "./types/user.type";
+import type { NuxtPage } from "nuxt/schema";
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -56,6 +57,22 @@ export default defineNuxtConfig({
     families: {
       "Noto+Sans+SC": true,
       Roboto: true,
+    },
+  },
+  hooks: {
+    "pages:extend"(pages) {
+      function setMiddleware(pages: NuxtPage[]) {
+        for (const page of pages) {
+          if (page.name?.includes("rooter")) {
+            page.meta ||= {};
+            page.meta.middleware = ["root-middleware"];
+          }
+          if (page.children) {
+            setMiddleware(page.children);
+          }
+        }
+      }
+      setMiddleware(pages);
     },
   },
 });

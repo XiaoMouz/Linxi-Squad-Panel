@@ -4,7 +4,7 @@
     :class="props.layoutClass"
   >
     <div
-      class="animate-spin rounded-full border-4 border-primary-600 border-t-transparent"
+      class="animate-spin rounded-full border-4 border-muted-foreground border-t-transparent"
       :class="props.sizeClass?.length ? props.sizeClass : 'h-5 w-5 '"
     />
   </div>

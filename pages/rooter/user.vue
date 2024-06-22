@@ -4,4 +4,6 @@ definePageMeta({
 });
 </script>
 
-<template></template>
+<template>
+  <div class="w-full h-full m-auto flex justify-center rounded-md"></div>
+</template>

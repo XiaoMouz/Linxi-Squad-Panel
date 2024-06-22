@@ -5,5 +5,5 @@ definePageMeta({
 </script>
 
 <template>
-  
+  <RooterInitSteamCMD />
 </template>

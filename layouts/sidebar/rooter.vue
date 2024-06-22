@@ -1,4 +1,6 @@
 <script setup lang="ts">
+//set middleware
+
 const list = [
   {
     title: "服务器状态",
