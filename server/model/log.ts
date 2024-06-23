@@ -18,6 +18,5 @@ export async function createLog(
       createdAt,
     },
   });
-  console.log(log);
   return log;
 }

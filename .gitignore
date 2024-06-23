@@ -25,5 +25,5 @@ logs
 
 # Image
 assets/image/**
-downloads
-SteamCMD
+/downloads
+/SteamCMD

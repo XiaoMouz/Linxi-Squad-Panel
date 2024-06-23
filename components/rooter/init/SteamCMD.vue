@@ -15,24 +15,40 @@
         </div>
       </div>
       <div v-else>
-        <div class="flex flex-raw space-x-3 align-center">
-          <div class="h-[89px] w-[80px] rounded-xl">
+        <div class="flex flex-raw space-x-4 align-center">
+          <div class="h-[80px] w-[80px] rounded-xl">
             <img class="rounded-xl" src="/assets/image/steamcmd.png" />
           </div>
           <div class="space-y-1">
-            <div class="h-10 w-[250px] space-x-4">
+            <div class="h-10 w-full space-x-4">
               <span>Steam CMD</span>
               <Badge v-if="status.exist">可用</Badge>
               <Badge v-else variant="destructive">不可用</Badge>
             </div>
-            <div v-if="status.exist" class="h-8 w-[200px]">目前尚未安装</div>
-            <div v-if="!status.exist" class="h-8 w-[200px]">
-              <span>已安装至 {{ status.path }}</span>
+
+            <div v-if="status.exist" class="h-8">
+              <span>
+                已安装至 <code>{{ status.path }}</code>
+              </span>
+            </div>
+            <div v-else v-if="!status.downloading" class="h-8">
+              <span>目前尚未安装</span>
+            </div>
+            <div v-if="status.downloading" class="h-8">
+              <Progress :model-value="status?.task?.progress" />
             </div>
           </div>
           <div class="my-auto">
-            <Button @click="">
-              <span>下载</span>
+            <Button
+              :disabled="status.downloading"
+              v-if="!status.exist"
+              @click="downloadSteamCMD"
+            >
+              <LoadingCycle v-if="status.downloading" sizeClass="w-4 h-4" />
+              <span>{{ status.downloading ? "下载中" : "初始化" }}</span>
+            </Button>
+            <Button v-else @click="">
+              <span>设置</span>
             </Button>
           </div>
         </div>
@@ -43,21 +59,47 @@
 </template>
 
 <script setup lang="ts">
+import { TaskType, TaskError, TaskStatus } from "@/types/io/task";
+import type { Task } from "@/types/io/task";
 const loading = ref(true);
-let status = await fetch("/api/rooter/init/steamcmd").then((res) => res.json());
-status = status.data;
-console.log(status.exist);
+let data = await fetch("/api/rooter/init/steamcmd").then((res) => res.json());
+data = data.data;
+
+const status = reactive<{
+  exist: boolean;
+  path: string;
+  downloading: boolean;
+  task: Task | null;
+}>({
+  exist: data?.exist,
+  path: data?.path,
+  downloading: false,
+  task: null,
+});
+
+const downloadSteamCMD = async () => {
+  status.downloading = true;
+
+  while (
+    data.status != TaskStatus.COMPLETED &&
+    data.status != TaskStatus.CANCELED &&
+    data.status != TaskStatus.ERROR
+  ) {
+    let task = await fetch("/api/rooter/init/steamcmd/download").then((res) =>
+      res.json()
+    );
+    data = task.data;
+    setTimeout(() => {}, 200);
+  }
+  status.downloading = false;
+  let local = await fetch("/api/rooter/init/steamcmd").then((res) =>
+    res.json()
+  );
+  status.exist = local.data.exist;
+  status.path = local.data.path;
+};
+
 if (status) {
   loading.value = false;
 }
-
-const downloadSteamCMD = async () => {
-  await fetch("/api/rooter/init/steamcmd/download");
-  const data = await fetch("/api/rooter/init/steamcmd").then((res) =>
-    res.json()
-  );
-
-  if (data) {
-  }
-};
 </script>

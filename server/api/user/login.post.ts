@@ -78,9 +78,6 @@ export default defineEventHandler(async (event) => {
   // update user last login
   updateUserTime(res.id);
 
-  //set header authorization
-  setHeader(event, "authorization", `Bearer ${accessToken}`);
-
   return {
     token: accessToken,
     expiresIn,

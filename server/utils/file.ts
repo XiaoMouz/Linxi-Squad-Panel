@@ -97,9 +97,7 @@ export async function download(task: Task): Promise<number> {
     task.finish_at = new Date().toISOString();
     task.status = TaskStatus.COMPLETED;
     if (task.filename.includes("steamcmd")) {
-      setTimeout(() => {
-        unzipTask(task);
-      }, 1000);
+      unzipTask(task);
     }
   });
 
