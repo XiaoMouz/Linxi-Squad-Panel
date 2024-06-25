@@ -1,5 +1,7 @@
 import { detectedSteamCMD, download } from "~/server/utils/file";
-import { Task, TaskStatus, TaskType } from "~/types/io/task";
+import { TaskStatus, TaskType } from "~/types/io/task";
+import type { Task } from "~/types/io/task";
+import os from "node:os";
 
 let missionId: number = NaN;
 
@@ -16,7 +18,7 @@ export default eventHandler(async (event) => {
     return { data: downloadMissions[missionId] };
   }
   const user = JSON.parse(JSON.stringify(await ensureAuth(event)));
-  console.log(user);
+
   let task: Task = {
     filename: "steamcmd.zip",
     url: "https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip",
@@ -30,6 +32,12 @@ export default eventHandler(async (event) => {
     error: 0,
     cancelCallback: () => {},
   };
+
+  // check operation system
+  if (os.type() === "Linux") {
+    console.log("正在使用 Linux, WIP for Linux");
+  }
+
   log2backend(
     event.path,
     `user ${user.username} [${user.id}] start download steamcmd`
